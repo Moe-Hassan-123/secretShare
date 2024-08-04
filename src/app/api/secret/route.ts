@@ -82,3 +82,5 @@ export async function POST(request: NextRequest) {
 
 	return NextResponse.json({ publicId: publicId }, { status: 201 });
 }
+
+export const runtime = "edge";
