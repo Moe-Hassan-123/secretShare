@@ -3,9 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-
+import ToastProvider from "./ToastProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,14 +24,15 @@ export default function RootLayout({
 			</head>
 
 			<body className={inter.className}>
-				<MantineProvider
-					theme={{
-						primaryColor: "dark",
-					}}
-				>
-					{children}
-				</MantineProvider>
-				<ToastContainer />
+				<main>
+					<MantineProvider
+						theme={{
+							primaryColor: "dark",
+						}}
+					>
+						<ToastProvider>{children}</ToastProvider>
+					</MantineProvider>
+				</main>
 			</body>
 		</html>
 	);
