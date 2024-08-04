@@ -1,7 +1,6 @@
 import { CreateSecret } from "@/types/CreateSecretRequest";
 import { NextRequest, NextResponse } from "next/server";
 import { DynamoDBClient, PutItemCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
-import { randomUUID } from "crypto";
 
 const client = new DynamoDBClient({
 	credentials: {
@@ -64,7 +63,7 @@ export async function POST(request: NextRequest) {
 	}
 
 	const item = result.data;
-	const publicId = randomUUID().toString();
+	const publicId = crypto.randomUUID().toString();
 
 	await client.send(
 		new PutItemCommand({
