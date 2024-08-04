@@ -6,12 +6,12 @@ import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-export default function RetrieveSecret({ params }: { params: { publicId: string } }) {
+export default function RetrieveSecret({ params }: { params: { publicId: string; encryptionKey: string } }) {
 	// Retrieve secret public info
 	const [secret, setSecret] = useState<string | null>(null);
 
 	const onClick = () => {
-		fetch(`/api/secret?publicId=${params.publicId}`, {
+		fetch(`/api/secret?publicId=${params.publicId}&encryptionKey=${params.encryptionKey}`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",

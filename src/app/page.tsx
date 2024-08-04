@@ -27,7 +27,7 @@ export default function Home() {
 			<h1 className="text-4xl font-bold">Share secrets with Ease!</h1>
 
 			<Center w="100%">
-				{!shareUrl && (
+				{!shareUrl ? (
 					<form
 						onSubmit={form.onSubmit((values) => {
 							fetch("/api/secret/", {
@@ -37,7 +37,8 @@ export default function Home() {
 								const data = await res.json();
 								console.log(data);
 								const publicId = data["publicId"] as string;
-								const url = `${window.location.origin}/${publicId}/r`;
+								const encryptionKey = data["encryptionKey"] as string;
+								const url = `${window.location.origin}/${publicId}/${encryptionKey}/r/`;
 								setShareUrl(url);
 							});
 						})}
@@ -50,8 +51,7 @@ export default function Home() {
 							</Button>
 						</Center>
 					</form>
-				)}
-				{shareUrl && (
+				) : (
 					<Stack>
 						<Text c="gray">{shareUrl}</Text>
 

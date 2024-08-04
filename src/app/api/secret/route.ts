@@ -1,6 +1,8 @@
 import { CreateSecret } from "@/types/CreateSecretRequest";
 import { NextRequest, NextResponse } from "next/server";
 import { DynamoDBClient, PutItemCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
+import { publicEncrypt, randomUUID, subtle } from "crypto";
+import { aesGcmDecrypt, aesGcmEncrypt } from "@/utils/encryption";
 
 const client = new DynamoDBClient({
 	credentials: {
@@ -11,9 +13,10 @@ const client = new DynamoDBClient({
 });
 
 export async function GET(request: NextRequest) {
-	const secretId = request.nextUrl.searchParams.get("publicId");
+	const publicId = request.nextUrl.searchParams.get("publicId");
+	const encryptionKey = request.nextUrl.searchParams.get("encryptionKey");
 
-	if (!secretId) {
+	if (!publicId) {
 		return NextResponse.json({ error: "Missing public id" }, { status: 400 });
 	}
 
@@ -21,11 +24,12 @@ export async function GET(request: NextRequest) {
 		new GetItemCommand({
 			TableName: "shareSecretsDb",
 			Key: {
-				publicId: { S: secretId },
+				publicId: { S: publicId },
 			},
 			ProjectionExpression: "secret, viewed",
 		})
 	);
+
 	if (!item.Item) {
 		return NextResponse.json({ error: "Secret not found" }, { status: 404 });
 	}
@@ -38,7 +42,7 @@ export async function GET(request: NextRequest) {
 		new UpdateItemCommand({
 			TableName: "shareSecretsDb",
 			Key: {
-				publicId: { S: secretId },
+				publicId: { S: publicId },
 			},
 			AttributeUpdates: {
 				viewed: {
@@ -51,8 +55,9 @@ export async function GET(request: NextRequest) {
 		})
 	);
 
-	const secret = item.Item["secret"]["S"];
-	return NextResponse.json({ message: secret }, { status: 200 });
+	const secret = item.Item["secret"]["S"]!;
+	const data = await aesGcmDecrypt(secret, encryptionKey!);
+	return NextResponse.json({ message: data }, { status: 200 });
 }
 
 export async function POST(request: NextRequest) {
@@ -65,12 +70,15 @@ export async function POST(request: NextRequest) {
 	const item = result.data;
 	const publicId = crypto.randomUUID().toString();
 
+	const encryptionKey = crypto.randomUUID().toString();
+	const encryptedSecret = await aesGcmEncrypt(item.secret, encryptionKey);
+
 	await client.send(
 		new PutItemCommand({
 			TableName: "shareSecretsDb",
 			Item: {
 				publicId: { S: publicId },
-				secret: { S: item.secret },
+				secret: { S: encryptedSecret },
 				sentBy: { S: item.sendMethod ?? "" },
 				extraInfoToReceiver: { S: item.extraInfoToReceiver ?? "" },
 				receiverEmail: { S: item.receiverEmail ?? "" },
@@ -79,7 +87,9 @@ export async function POST(request: NextRequest) {
 		})
 	);
 
-	return NextResponse.json({ publicId: publicId }, { status: 201 });
+	// encryptionKey is never stored in the DB, it's returned to the user
+	// in order to be appended to the url.
+	return NextResponse.json({ publicId, encryptionKey }, { status: 201 });
 }
 
 export const runtime = "edge";
