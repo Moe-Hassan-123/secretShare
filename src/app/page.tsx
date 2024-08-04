@@ -35,7 +35,7 @@ export default function Home() {
 								body: JSON.stringify(values),
 							}).then(async (res) => {
 								const data = await res.json();
-								console.log(data);
+
 								const publicId = data["publicId"] as string;
 								const encryptionKey = data["encryptionKey"] as string;
 								const url = `${window.location.origin}/${publicId}/${encryptionKey}/r/`;

@@ -6,9 +6,6 @@ import exp from "constants";
 /**
  * Encrypts plaintext using AES-GCM with supplied password, for decryption with aesGcmDecrypt().
  * c) Chris Veness MIT Licence
- * @example
- *   const ciphertext = await aesGcmEncrypt('my secret text', 'pw');
- *   aesGcmEncrypt('my secret text', 'pw').then(function(ciphertext) { console.log(ciphertext); });
  */
 async function aesGcmEncrypt(plaintext: string, password: string): Promise<string> {
 	const pwUtf8 = new TextEncoder().encode(password); // encode password as UTF-8

@@ -20,15 +20,6 @@ export default function RetrieveSecret({ params }: { params: { publicId: string;
 				},
 			});
 		} catch (error) {
-			if (error.status == 404) {
-				toast.error("Invalid URL");
-			} else if (error.status == 400) {
-				toast.error("hello");
-			} else {
-				toast.error("An error occurred while retrieving the secret");
-			}
-
-			console.log(error);
 			setSecret(null);
 			return;
 		}
