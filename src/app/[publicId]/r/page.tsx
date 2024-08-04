@@ -38,7 +38,7 @@ export default function RetrieveSecret({ params }: { params: { publicId: string 
 				)}
 				{secret && (
 					<>
-						Here's your secret
+						Here&apos;s your secret
 						<Divider w="100%" />
 						<Stack w="100%">
 							<br />
