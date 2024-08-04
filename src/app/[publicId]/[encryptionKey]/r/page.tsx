@@ -7,19 +7,44 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function RetrieveSecret({ params }: { params: { publicId: string; encryptionKey: string } }) {
-	// Retrieve secret public info
 	const [secret, setSecret] = useState<string | null>(null);
 
-	const onClick = () => {
-		fetch(`/api/secret?publicId=${params.publicId}&encryptionKey=${params.encryptionKey}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => setSecret(data.message))
-			.catch(() => toast.error("Failed to fetch the secret"));
+	const onClick = async () => {
+		let response;
+
+		try {
+			response = await fetch(`/api/secret?publicId=${params.publicId}&encryptionKey=${params.encryptionKey}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+		} catch (error) {
+			if (error.status == 404) {
+				toast.error("Invalid URL");
+			} else if (error.status == 400) {
+				toast.error("hello");
+			} else {
+				toast.error("An error occurred while retrieving the secret");
+			}
+
+			console.log(error);
+			setSecret(null);
+			return;
+		}
+
+		if (response.status == 404) {
+			return toast.error("Invalid URL, make sure the URL is valid or ask for a new one.");
+		} else if (response.status == 400) {
+			return toast.error("You've already seen that secret, it can only be viewed once!");
+		}
+
+		if (response.status != 200) {
+			return toast.error("An error occurred while retrieving the secret");
+		}
+
+		const result = await response.json();
+		setSecret(result["message"]);
 	};
 
 	return (
