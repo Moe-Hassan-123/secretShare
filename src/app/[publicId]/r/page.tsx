@@ -28,15 +28,14 @@ export default function RetrieveSecret({ params }: { params: { publicId: string 
 			<br />
 
 			<Stack justify="center" align="center">
-				{!secret && (
+				{!secret ? (
 					<>
 						Click this button to retrieve the secret
 						<Button onClick={onClick} maw="250px">
 							Get the secret
 						</Button>
 					</>
-				)}
-				{secret && (
+				) : (
 					<>
 						Here&apos;s your secret
 						<Divider w="100%" />
