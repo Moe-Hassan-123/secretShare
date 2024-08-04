@@ -1,8 +1,8 @@
 import { CreateSecret } from "@/types/CreateSecretRequest";
 import { NextRequest, NextResponse } from "next/server";
-import { DynamoDBClient, PutItemCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
-import { publicEncrypt, randomUUID, subtle } from "crypto";
+import { DynamoDBClient, PutItemCommand, GetItemCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { aesGcmDecrypt, aesGcmEncrypt } from "@/utils/encryption";
+import getUuid from "@/utils/getUuid";
 
 const client = new DynamoDBClient({
 	credentials: {
@@ -68,9 +68,9 @@ export async function POST(request: NextRequest) {
 	}
 
 	const item = result.data;
-	const publicId = crypto.randomUUID().toString();
+	const publicId = getUuid();
 
-	const encryptionKey = crypto.randomUUID().toString();
+	const encryptionKey = getUuid().toString();
 	const encryptedSecret = await aesGcmEncrypt(item.secret, encryptionKey);
 
 	await client.send(
