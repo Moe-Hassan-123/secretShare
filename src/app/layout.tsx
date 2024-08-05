@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { Anchor, AppShell, AppShellFooter, AppShellMain, Center, ColorSchemeScript, Group, MantineProvider, Menu, MenuDropdown, MenuItem, MenuTarget } from "@mantine/core";
 import "@mantine/core/styles.css";
 import ToastProvider from "./ToastProvider";
+import { IconMail, IconPlanet } from "@tabler/icons-react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -33,7 +35,22 @@ export default function RootLayout({
 							},
 						}}
 					>
-						<ToastProvider>{children}</ToastProvider>
+						<ToastProvider>
+							<AppShell
+								footer={{
+									height: "40px",
+								}}
+							>
+								<AppShellMain>{children}</AppShellMain>
+
+								<AppShellFooter component={Center}>
+									Created by&nbsp;
+									<Anchor href="https://mohamed-hassan.dev" target="_blank">
+										Mohamed Hassan
+									</Anchor>
+								</AppShellFooter>
+							</AppShell>
+						</ToastProvider>
 					</MantineProvider>
 				</main>
 			</body>
