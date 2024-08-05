@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { DynamoDBClient, PutItemCommand, GetItemCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { aesGcmDecrypt, aesGcmEncrypt } from "@/utils/encryption";
 import getUuid from "@/utils/getUuid";
+import generateRandomNumber from "@/utils/generateRandomNumber";
+import generateRandomString from "@/utils/generateRandomString";
 
 const client = new DynamoDBClient({
 	credentials: {
@@ -60,24 +62,6 @@ export async function GET(request: NextRequest) {
 	return NextResponse.json({ message: data }, { status: 200 });
 }
 
-function createRandomString(length: number) {
-	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	let result = "";
-	for (let i = 0; i < length; i++) {
-		result += chars.charAt(Math.floor(Math.random() * chars.length));
-	}
-	return result;
-}
-
-function createRandomNumbers(length: number) {
-	const chars = "0123456789";
-	let result = "";
-	for (let i = 0; i < length; i++) {
-		result += chars.charAt(Math.floor(Math.random() * chars.length));
-	}
-	return result;
-}
-
 export async function POST(request: NextRequest) {
 	const data = await request.json();
 	const result = await CreateSecret.safeParseAsync(data);
@@ -86,8 +70,8 @@ export async function POST(request: NextRequest) {
 	}
 
 	const item = result.data;
-	const publicId = createRandomNumbers(4);
-	const encryptionKey = createRandomString(8);
+	const publicId = generateRandomNumber(4);
+	const encryptionKey = generateRandomString(8);
 
 	const encryptedSecret = await aesGcmEncrypt(item.secret, encryptionKey);
 	try {
