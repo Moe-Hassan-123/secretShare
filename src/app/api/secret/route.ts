@@ -1,8 +1,7 @@
-import { CreateSecret } from "@/types/CreateSecretRequest";
+import { CreateSecret, CreateSecretRequest } from "@/types/CreateSecretRequest";
 import { NextRequest, NextResponse } from "next/server";
 import { DynamoDBClient, PutItemCommand, GetItemCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { aesGcmDecrypt, aesGcmEncrypt } from "@/utils/encryption";
-import getUuid from "@/utils/getUuid";
 import generateRandomNumber from "@/utils/generateRandomNumber";
 import generateRandomString from "@/utils/generateRandomString";
 
@@ -83,39 +82,37 @@ export async function POST(request: NextRequest) {
 	const encryptionKey = generateRandomString(8);
 
 	const encryptedSecret = await aesGcmEncrypt(item.secret, encryptionKey);
+
 	try {
-		await client.send(
-			new PutItemCommand({
-				TableName: "shareSecretsDb",
-				Item: {
-					publicId: { S: publicId },
-					secret: { S: encryptedSecret },
-					sentBy: { S: item.sendMethod ?? "" },
-					extraInfoToReceiver: { S: item.extraInfoToReceiver ?? "" },
-					receiverEmail: { S: item.receiverEmail ?? "" },
-					viewed: { BOOL: false },
-				},
-			})
-		);
+		await putItem(publicId, encryptedSecret, item);
 	} catch (error) {
-		// In the slight case of having a public ID be repeated twice in the DB
+		// In the slight case of having a public ID be repeated twice in the DB,
 		// we generate another public ID and try again.
-		new PutItemCommand({
-			TableName: "shareSecretsDb",
-			Item: {
-				publicId: { S: createRandomNumbers(4) },
-				secret: { S: encryptedSecret },
-				sentBy: { S: item.sendMethod ?? "" },
-				extraInfoToReceiver: { S: item.extraInfoToReceiver ?? "" },
-				receiverEmail: { S: item.receiverEmail ?? "" },
-				viewed: { BOOL: false },
-			},
-		});
+		await putItem(generateRandomNumber(4), encryptedSecret, item);
 	}
 
 	// encryptionKey is never stored in the DB, it's returned to the user
 	// in order to be appended to the url.
 	return NextResponse.json({ publicId, encryptionKey }, { status: 201 });
 }
+
+const putItem = async (publicId: string, encryptedSecret: string, item: CreateSecretRequest) => {
+	const expirationTime = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
+
+	await client.send(
+		new PutItemCommand({
+			TableName: "shareSecretsDb",
+			Item: {
+				publicId: { S: publicId },
+				secret: { S: encryptedSecret },
+				sentBy: { S: item.sendMethod ?? "" },
+				extraInfoToReceiver: { S: item.extraInfoToReceiver ?? "" },
+				receiverEmail: { S: item.receiverEmail ?? "" },
+				viewed: { BOOL: false },
+				expirationTime: { N: expirationTime.toString() }, // Add expiration time
+			},
+		})
+	);
+};
 
 export const runtime = "edge";

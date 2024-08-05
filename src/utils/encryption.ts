@@ -1,8 +1,6 @@
 //  * @fileoverview This file contains functions for encrypting and decrypting strings using AES-GCM.
 //  * https://gist.github.com/chrisveness/43bcda93af9f646d083fad678071b90a
 
-import exp from "constants";
-
 /**
  * Encrypts plaintext using AES-GCM with supplied password, for decryption with aesGcmDecrypt().
  * c) Chris Veness MIT Licence
