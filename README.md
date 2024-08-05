@@ -33,7 +33,7 @@ npm start
 
 ## Usage
 
-1. Visit `https://sharesecret.uk` (or `localhost:3000` if running locally).
+1. Visit https://sharesecret.uk (or http://localhost:3000 if running locally).
 2. Enter your secret in the provided text area.
 3. Click "Generate Link".
 4. Copy the generated URL and share it with your intended recipient.
