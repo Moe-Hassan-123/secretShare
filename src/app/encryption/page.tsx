@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
-import { Anchor, MantineProvider, createTheme } from "@mantine/core";
-import { Container, Title, Text, List, ListItem, Paper, Stack, Group, ThemeIcon, AppShell, Header } from "@mantine/core";
+import { Anchor } from "@mantine/core";
+import { Container, Title, Text, List, ListItem, Paper, Stack, Group, ThemeIcon } from "@mantine/core";
 import { IconLock, IconEye, IconServer, IconKey, IconShield, IconNotes, IconRefresh, IconQuestionMark } from "@tabler/icons-react";
 
 export default function SecurityCommitmentPage() {
@@ -82,19 +82,19 @@ export default function SecurityCommitmentPage() {
 						title="How It Works"
 						content=""
 						items={[
-							<span>
+							<span key={0}>
 								<strong>Encryption:</strong> When you create a secret, it's encrypted with a unique key generated just for that secret.
 							</span>,
-							<span>
+							<span key={1}>
 								<strong>Storage:</strong> Only the encrypted version of your secret is stored on our servers.
 							</span>,
-							<span>
+							<span key={2}>
 								<strong>Sharing:</strong> You receive a secure link containing the secret's ID and the decryption key.
 							</span>,
-							<span>
+							<span key={3}>
 								<strong>Viewing:</strong> When the recipient opens the link, the encrypted secret is retrieved and decrypted in their browser.
 							</span>,
-							<span>
+							<span key={4}>
 								<strong>Deletion:</strong> After viewing, the encrypted secret is immediately and permanently deleted from our servers.
 							</span>,
 						]}
@@ -115,7 +115,7 @@ export default function SecurityCommitmentPage() {
 						title="Verifying Our Security"
 						content="We encourage you to:"
 						items={[
-							<span>
+							<span key={0}>
 								Review our open-source code on{" "}
 								<Anchor href="https://github.com/Moe-Hassan-123/secretShare" target="_blank">
 									Github
