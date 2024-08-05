@@ -53,7 +53,7 @@ We welcome contributions from the community! If you'd like to contribute:
 
 ## Security
 
-If you discover a security vulnerability within SecretShare, please send an e-mail to security@secretshare.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within SecretShare, please send an e-mail to `security@secretshare.uk`. All security vulnerabilities will be promptly addressed.
 
 ## License
 
