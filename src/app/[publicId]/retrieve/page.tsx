@@ -99,3 +99,5 @@ export default function RetrieveSecret({ params }: { params: { publicId: string 
 		</Container>
 	);
 }
+
+export const runtime = "edge";
