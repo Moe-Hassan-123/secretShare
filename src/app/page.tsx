@@ -4,7 +4,7 @@ import CopyButton from "@/components/buttons/CopyButton";
 import { CreateSecretRequest } from "@/types/CreateSecretRequest";
 import { Anchor, Button, Center, Container, Group, Mark, Modal, Paper, Stack, Text, Textarea, Title, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconLock, IconLockAccessOff, IconLockDown, IconLockExclamation, IconLockMinus, IconLockPlus, IconLockSquareRounded } from "@tabler/icons-react";
+import { IconBrandGithub, IconLock, IconLockAccessOff, IconLockDown, IconLockExclamation, IconLockMinus, IconLockPlus, IconLockSquareRounded } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -99,7 +99,7 @@ export default function Home() {
 
 				<Paper withBorder p="md" shadow="sm">
 					<Stack gap="md">
-						<Title order={3}>We Can't Read Your Secrets</Title>
+						<Title order={3}>We Prioritize Your Privacy</Title>
 
 						<ol>
 							<li>
@@ -114,27 +114,50 @@ export default function Home() {
 							<li>
 								No logs, no traces: Once viewed, your secret is <Mark>permanently erased</Mark> from our systems
 							</li>
+							<li> No account required: Share secrets without creating an account or giving us any personal information</li>
+							<li>We don't data mine: Your information isn't used to build profiles or serve ads</li>
 						</ol>
 					</Stack>
 				</Paper>
 
 				<Paper withBorder p="md" shadow="sm">
 					<Stack gap="md">
-						<Title order={3}>Why Choose Us Over Big Tech?</Title>
-
-						<Text>
-							In today's digital landscape, your data is valuable. Many large tech companies have business models that rely on collecting, analyzing, and monetizing user data. Here's why
-							our service is different:
-						</Text>
+						<Title order={3}>Why Choose Us?</Title>
 
 						<ol>
-							<li>We don't data mine: Your information isn't used to build profiles or serve ads</li>
-							<li> No account required: Share secrets without creating an account or giving us any personal information</li>
+							<li>Focused service: We do one thing - secure, temporary secret sharing - and we do it well</li>
 							<li>
 								Truly temporary: Unlike "disappearing" messages on some platforms, <Mark>your secrets are permanently deleted</Mark> after viewing
 							</li>
-							<li>Focused service: We do one thing - secure, temporary secret sharing - and we do it well</li>
+							<li>Open source: Our code is transparent and open for inspection, fostering trust and enabling community contributions</li>
+							<li>Independent from Big Tech: We're not part of large tech ecosystems that often prioritize data collection over privacy</li>
 						</ol>
+					</Stack>
+				</Paper>
+
+				<Paper withBorder p="md" shadow="sm">
+					<Stack gap="md">
+						<Title order={3}>
+							We're{" "}
+							<Anchor inherit href="https://github.com/Moe-Hassan-123/share-secrets" target="_blank">
+								Open Source
+							</Anchor>
+						</Title>
+
+						<Text>
+							We believe in transparency and community-driven development. Our <Mark>open-source approach</Mark> offers several benefits:
+						</Text>
+
+						<ol>
+							<li>Code transparency: Anyone can inspect our code to verify our security claims</li>
+							<li>Community contributions: Developers worldwide can help improve our service</li>
+							<li>Rapid bug fixing: Open-source collaboration often leads to faster identification and resolution of issues</li>
+							<li>Customization options: Tech-savvy users can modify and self-host our solution</li>
+						</ol>
+
+						<Text>
+							You can view our code on github <Anchor>Here</Anchor>
+						</Text>
 					</Stack>
 				</Paper>
 			</Stack>
