@@ -53,7 +53,7 @@ export default function Home() {
 
 								const publicId = data["publicId"] as string;
 								const encryptionKey = data["encryptionKey"] as string;
-								const url = `${window.location.origin}/${publicId}/${encryptionKey}/r/`;
+								const url = `${window.location.origin}/${publicId}/retrieve/?key=${encryptionKey}`;
 								setShareUrl(url);
 								form.reset();
 							});

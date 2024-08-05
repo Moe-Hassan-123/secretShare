@@ -60,6 +60,24 @@ export async function GET(request: NextRequest) {
 	return NextResponse.json({ message: data }, { status: 200 });
 }
 
+function createRandomString(length: number) {
+	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	let result = "";
+	for (let i = 0; i < length; i++) {
+		result += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+	return result;
+}
+
+function createRandomNumbers(length: number) {
+	const chars = "0123456789";
+	let result = "";
+	for (let i = 0; i < length; i++) {
+		result += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+	return result;
+}
+
 export async function POST(request: NextRequest) {
 	const data = await request.json();
 	const result = await CreateSecret.safeParseAsync(data);
@@ -68,24 +86,39 @@ export async function POST(request: NextRequest) {
 	}
 
 	const item = result.data;
-	const publicId = getUuid();
+	const publicId = createRandomNumbers(4);
+	const encryptionKey = createRandomString(8);
 
-	const encryptionKey = getUuid().toString();
 	const encryptedSecret = await aesGcmEncrypt(item.secret, encryptionKey);
-
-	await client.send(
+	try {
+		await client.send(
+			new PutItemCommand({
+				TableName: "shareSecretsDb",
+				Item: {
+					publicId: { S: publicId },
+					secret: { S: encryptedSecret },
+					sentBy: { S: item.sendMethod ?? "" },
+					extraInfoToReceiver: { S: item.extraInfoToReceiver ?? "" },
+					receiverEmail: { S: item.receiverEmail ?? "" },
+					viewed: { BOOL: false },
+				},
+			})
+		);
+	} catch (error) {
+		// In the slight case of having a public ID be repeated twice in the DB
+		// we generate another public ID and try again.
 		new PutItemCommand({
 			TableName: "shareSecretsDb",
 			Item: {
-				publicId: { S: publicId },
+				publicId: { S: createRandomNumbers(4) },
 				secret: { S: encryptedSecret },
 				sentBy: { S: item.sendMethod ?? "" },
 				extraInfoToReceiver: { S: item.extraInfoToReceiver ?? "" },
 				receiverEmail: { S: item.receiverEmail ?? "" },
 				viewed: { BOOL: false },
 			},
-		})
-	);
+		});
+	}
 
 	// encryptionKey is never stored in the DB, it's returned to the user
 	// in order to be appended to the url.
