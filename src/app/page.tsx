@@ -156,7 +156,10 @@ export default function Home() {
 						</ol>
 
 						<Text>
-							You can view our code on github <Anchor>Here</Anchor>
+							You can view our code on{" "}
+							<Anchor href="https://github.com/Moe-Hassan-123/share-secrets" inherit target="_blank">
+								github
+							</Anchor>
 						</Text>
 					</Stack>
 				</Paper>
