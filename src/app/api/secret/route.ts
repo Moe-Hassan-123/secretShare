@@ -40,6 +40,9 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({ error: "Secret already viewed" }, { status: 400 });
 	}
 
+	// We keep a reference in the DB in order to show appropriate error messages in the future if the link was used again.
+	// We destroy the secret and set a "viewed" column as true.
+	// but in any case, the stored secret is encrypted and can only be decrypted by the key embedded in the URL given to the user.
 	await client.send(
 		new UpdateItemCommand({
 			TableName: "shareSecretsDb",
@@ -51,6 +54,12 @@ export async function GET(request: NextRequest) {
 					Action: "PUT",
 					Value: {
 						BOOL: true,
+					},
+				},
+				secret: {
+					Action: "PUT",
+					Value: {
+						S: "",
 					},
 				},
 			},
