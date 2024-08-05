@@ -31,7 +31,7 @@ export default function Home() {
 		<Container size="sm" my="xl">
 			<Stack gap="xl">
 				<Center>
-					<Image src={LogoSvg} alt="SecretShare" width={48} height={48} />
+					<Image src={LogoSvg} alt="SecretShare" width={100} height={100} />
 				</Center>
 
 				<Title order={1} ta="center">
