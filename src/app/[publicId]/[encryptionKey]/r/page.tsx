@@ -53,7 +53,7 @@ export default function RetrieveSecret({ params }: { params: { publicId: string;
 					</>
 				) : (
 					<>
-						Here&apos;s your secret
+						Here's your secret
 						<Divider w="100%" />
 						<Stack w="100%">
 							<br />
