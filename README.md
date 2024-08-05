@@ -26,9 +26,9 @@ To set up your own instance of SecretShare:
 ```bash
 git clone git@github.com:Moe-Hassan-123/secretShare.git
 cd secretShare
-npm install
-npm run build
-npm start
+pnpm install
+pnpm run build
+pnpm start
 ```
 
 ## Usage
