@@ -1,3 +1,6 @@
+<img src="src/static/Logo.svg" alt="SecretShare Logo" width="128"/>
+
+
 # SecretShare
 
 SecretShare is an open-source, secure, and privacy-focused secret sharing service. It allows users to share sensitive information through encrypted, self-destructing messages. Inspired by the need for privacy-focused, temporary secret sharing in the digital age.
