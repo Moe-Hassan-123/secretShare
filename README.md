@@ -1,9 +1,9 @@
-<img src="src/static/Logo.svg" alt="SecretShare Logo" width="128"/>
+<img src="src/static/Logo.svg" alt="ShareSecret Logo" width="128"/>
 
 
-# SecretShare
+# ShareSecret
 
-SecretShare is an open-source, secure, and privacy-focused secret sharing service. It allows users to share sensitive information through encrypted, self-destructing messages. Inspired by the need for privacy-focused, temporary secret sharing in the digital age.
+ShareSecret is an open-source, secure, and privacy-focused secret sharing service. It allows users to share sensitive information through encrypted, self-destructing messages. Inspired by the need for privacy-focused, temporary secret sharing in the digital age.
 
 Access the hosted version online at: https://sharesecret.uk
 ## Features
@@ -24,11 +24,11 @@ Access the hosted version online at: https://sharesecret.uk
 
 ## Installation
 
-To set up your own instance of SecretShare:
+To set up your own instance of ShareSecret:
 
 ```bash
-git clone git@github.com:Moe-Hassan-123/secretShare.git
-cd secretShare
+git clone git@github.com:Moe-Hassan-123/shareSecret.git
+cd shareSecret
 pnpm install
 pnpm run build
 pnpm start
@@ -53,7 +53,7 @@ We welcome contributions from the community! If you'd like to contribute:
 
 ## Security
 
-If you discover a security vulnerability within SecretShare, please send an e-mail to `security@secretshare.uk`. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within ShareSecret, please send an e-mail to `security@secretshare.uk`. All security vulnerabilities will be promptly addressed.
 
 ## License
 
